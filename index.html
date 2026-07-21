@@ -52,9 +52,9 @@
     gap: 14px;
     box-sizing: border-box;
   }
-  .wordmark { display: flex; align-items: center; gap: 12px; }
-  .wordmark .mark { height: 34px; width: auto; display: block; }
-  .wordmark .name { color: oklch(95% 0 0); font-weight: 400; font-size: 14px; letter-spacing: 0.18em; text-transform: uppercase; }
+  .wordmark { display: flex; align-items: center; gap: 14px; }
+  .wordmark .mark { height: 36px; width: auto; display: block; }
+  .wordmark .name { display: flex; flex-direction: column; line-height: 1.5; color: oklch(95% 0 0); font-weight: 400; font-size: 13px; letter-spacing: 0.18em; text-transform: uppercase; }
   .wordmark .role { color: oklch(50% 0 0); font-weight: 500; font-size: 12px; letter-spacing: 0.01em; }
   .header-actions { display: flex; align-items: center; gap: 10px; flex-wrap: wrap; }
   .ghost-btn {
@@ -107,7 +107,7 @@
   }
 
   .card {
-    background: oklch(11% 0 0 / 0.92);
+    background: oklch(11% 0 0 / 0.82);
     border: 1px solid oklch(100% 0 0 / 0.06);
     border-radius: 18px;
     padding: 22px;
@@ -142,7 +142,7 @@
     font-size: 11px; font-weight: 500; letter-spacing: 0.06em; text-transform: uppercase; cursor: pointer;
   }
 
-  .week-card { background: oklch(11% 0 0 / 0.92); border-radius: 18px; padding: 20px; display: flex; flex-direction: column; gap: 12px; }
+  .week-card { background: oklch(11% 0 0 / 0.82); border-radius: 18px; padding: 20px; display: flex; flex-direction: column; gap: 12px; }
   .week-card .title { color: oklch(48% 0 0); font-size: 11px; letter-spacing: 0.14em; text-transform: uppercase; }
   .week-bars { display: flex; align-items: flex-end; gap: 10px; height: 100px; }
   .week-bar-col { flex: 1; display: flex; flex-direction: column; align-items: center; gap: 5px; height: 100%; justify-content: flex-end; }
@@ -200,7 +200,10 @@
 <div id="app">
   <header>
     <div class="header-inner">
-      <div class="wordmark"><img class="mark" src="assets/tm-mark.png" alt="TM"><span class="name">Tiago Melogno</span></div>
+      <div class="wordmark">
+        <img class="mark" src="assets/tm-mark.png" alt="TM">
+        <span class="name"><span>Tiago</span><span>Melogno</span></span>
+      </div>
       <div class="header-actions">
         <button class="ghost-btn" id="editGoalsBtn">Editar metas</button>
         <button class="ghost-btn" id="openSummaryBtn">Resumen de horas</button>
