@@ -1,0 +1,619 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<meta name="apple-mobile-web-app-title" content="Timer TM">
+<meta name="theme-color" content="#000000">
+<title>Timer TM</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700;800&display=swap">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='14' fill='%230a0a0a'/%3E%3Ctext x='32' y='40' font-family='Arial, sans-serif' font-weight='800' font-size='22' fill='%23e8ba98' text-anchor='middle'%3ETM%3C/text%3E%3C/svg%3E">
+<style>
+  * { box-sizing: border-box; }
+  body { margin: 0; font-family: 'Poppins', -apple-system, system-ui, sans-serif; background: oklch(6% 0 0); }
+  button { font-family: inherit; }
+
+  #app {
+    min-height: 100vh;
+    background: oklch(6% 0 0);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding-bottom: 48px;
+  }
+
+  header {
+    width: 100%;
+    max-width: 900px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 24px 20px 12px;
+    flex-wrap: wrap;
+    gap: 14px;
+  }
+  .wordmark { display: flex; align-items: baseline; gap: 8px; }
+  .wordmark .name { color: oklch(95% 0 0); font-weight: 700; font-size: 15px; letter-spacing: 0.02em; }
+  .wordmark .role { color: oklch(50% 0 0); font-weight: 500; font-size: 12px; letter-spacing: 0.01em; }
+  .header-actions { display: flex; align-items: center; gap: 10px; flex-wrap: wrap; }
+  .ghost-btn {
+    border: 1px solid oklch(100% 0 0 / 0.14);
+    cursor: pointer;
+    padding: 9px 14px;
+    border-radius: 9px;
+    font-size: 11px;
+    font-weight: 700;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    background: transparent;
+    color: oklch(80% 0 0);
+  }
+  .ghost-btn:hover { border-color: oklch(100% 0 0 / 0.3); color: oklch(95% 0 0); }
+
+  main {
+    width: 100%;
+    max-width: 900px;
+    padding: 6px 20px 0;
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+  }
+
+  .status-row {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 2px 4px;
+  }
+  .status-row .date { color: oklch(55% 0 0); font-size: 13px; text-transform: capitalize; }
+  .streak-pill {
+    display: flex; align-items: center; gap: 7px;
+    background: oklch(11% 0 0); padding: 6px 14px; border-radius: 20px;
+  }
+  .streak-dot { width: 7px; height: 7px; border-radius: 50%; background: oklch(97% 0 0); }
+  .streak-pill span.label { color: oklch(90% 0 0); font-size: 13px; font-weight: 700; }
+
+  .cards {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 16px;
+  }
+  @media (min-width: 720px) {
+    .cards { grid-template-columns: 1fr 1fr; }
+  }
+
+  .card {
+    background: oklch(11% 0 0);
+    border: 1px solid oklch(100% 0 0 / 0.06);
+    border-radius: 18px;
+    padding: 22px;
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+    transition: border-color 0.2s ease;
+  }
+  .card-head { display: flex; align-items: center; justify-content: space-between; }
+  .card-tag { font-weight: 800; font-size: 15px; letter-spacing: 0.24em; }
+  .card-state { font-size: 11px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.08em; }
+  .card-time { color: oklch(97% 0 0); font-size: clamp(38px, 6vw, 50px); font-weight: 600; font-variant-numeric: tabular-nums; letter-spacing: 0.01em; }
+  .card-bar { height: 7px; border-radius: 4px; background: oklch(20% 0 0); overflow: hidden; }
+  .card-bar-fill { height: 100%; border-radius: 4px; transition: width 0.3s ease; }
+  .card-goal-row { display: flex; align-items: center; justify-content: space-between; padding: 0 2px; }
+  .card-goal-row .goal { font-size: 10px; letter-spacing: 0.14em; text-transform: uppercase; color: oklch(45% 0 0); }
+  .card-goal-row .progress { font-size: 11px; font-weight: 700; color: oklch(70% 0 0); }
+  .card-row { display: flex; gap: 8px; }
+  .step-btn {
+    flex: 1; padding: 9px 0; border-radius: 9px;
+    border: 1px solid oklch(24% 0 0); background: transparent;
+    color: oklch(75% 0 0); font-size: 12px; font-weight: 600; cursor: pointer;
+  }
+  .step-btn:disabled { opacity: 0.4; cursor: not-allowed; }
+  .main-btn {
+    flex: 1; padding: 13px 0; border-radius: 11px; border: none;
+    color: oklch(6% 0 0); font-size: 14px; font-weight: 800; letter-spacing: 0.04em; cursor: pointer;
+  }
+  .main-btn:disabled { opacity: 0.4; cursor: not-allowed; }
+  .finalize-btn {
+    flex: 1; padding: 13px 0; border-radius: 11px; border: 1px solid; background: transparent;
+    font-size: 12px; font-weight: 700; cursor: pointer;
+  }
+
+  .week-card { background: oklch(11% 0 0); border-radius: 18px; padding: 20px; display: flex; flex-direction: column; gap: 12px; }
+  .week-card .title { color: oklch(48% 0 0); font-size: 11px; letter-spacing: 0.14em; text-transform: uppercase; }
+  .week-bars { display: flex; align-items: flex-end; gap: 10px; height: 100px; }
+  .week-bar-col { flex: 1; display: flex; flex-direction: column; align-items: center; gap: 5px; height: 100%; justify-content: flex-end; }
+  .week-bar-pair { display: flex; gap: 3px; align-items: flex-end; height: 100%; }
+  .week-bar { width: 9px; border-radius: 2px; }
+  .week-bar-label { font-size: 10px; text-transform: uppercase; }
+
+  footer.note { color: oklch(38% 0 0); font-size: 10px; text-align: center; padding: 4px 20px 0; }
+
+  .modal-overlay {
+    position: fixed; inset: 0; background: oklch(0% 0 0 / 0.72);
+    display: flex; align-items: center; justify-content: center; z-index: 100; padding: 24px;
+  }
+  .modal-overlay[hidden] { display: none; }
+  .modal {
+    background: oklch(9% 0 0); border: 1px solid oklch(100% 0 0 / 0.1); border-radius: 18px;
+    padding: 24px; max-width: 420px; width: 100%; display: flex; flex-direction: column; gap: 16px;
+  }
+  .modal-summary { max-width: 460px; max-height: 80vh; overflow-y: auto; }
+
+  .goal-title { color: oklch(97% 0 0); font-weight: 700; font-size: 14px; letter-spacing: 0.1em; text-transform: uppercase; }
+  .goal-desc { color: oklch(55% 0 0); font-size: 12px; line-height: 1.5; }
+  .goal-row {
+    display: flex; align-items: center; justify-content: space-between;
+    background: oklch(12% 0 0); border-radius: 11px; padding: 12px 16px;
+  }
+  .goal-tag { font-weight: 800; font-size: 13px; letter-spacing: 0.2em; }
+  .goal-stepper { display: flex; align-items: center; gap: 12px; }
+  .goal-stepper button {
+    width: 30px; height: 30px; border-radius: 8px; border: 1px solid oklch(30% 0 0);
+    background: transparent; color: oklch(70% 0 0); font-size: 16px; cursor: pointer;
+  }
+  .goal-stepper span { min-width: 48px; text-align: center; font-size: 14px; font-weight: 700; color: oklch(95% 0 0); }
+  .save-btn {
+    padding: 14px 0; border-radius: 11px; border: none; background: oklch(97% 0 0);
+    color: oklch(6% 0 0); font-size: 13px; font-weight: 800; letter-spacing: 0.06em; text-transform: uppercase; cursor: pointer;
+  }
+
+  .modal-head { display: flex; align-items: center; justify-content: space-between; }
+  .modal-head .title { color: oklch(97% 0 0); font-weight: 800; font-size: 14px; letter-spacing: 0.16em; text-transform: uppercase; }
+  .close-btn { border: none; background: transparent; color: oklch(60% 0 0); font-size: 20px; cursor: pointer; line-height: 1; padding: 0; }
+  .section-label { color: oklch(48% 0 0); font-size: 10px; letter-spacing: 0.14em; text-transform: uppercase; margin-top: 6px; }
+  .summary-list { display: flex; flex-direction: column; gap: 8px; }
+  .summary-row { display: flex; align-items: center; justify-content: space-between; padding: 12px 14px; background: oklch(12% 0 0); border-radius: 11px; }
+  .summary-row .label { color: oklch(85% 0 0); font-size: 12px; min-width: 120px; text-transform: capitalize; }
+  .summary-metric { display: flex; align-items: center; gap: 6px; }
+  .summary-dot { width: 7px; height: 7px; border-radius: 50%; }
+  .summary-metric .val { font-size: 12px; font-weight: 700; min-width: 44px; color: oklch(90% 0 0); }
+</style>
+</head>
+<body>
+<div id="app">
+  <header>
+    <div class="wordmark"><span class="name">Tiago Melogno</span></div>
+    <div class="header-actions">
+      <button class="ghost-btn" id="editGoalsBtn">Editar metas</button>
+      <button class="ghost-btn" id="openSummaryBtn">Resumen de horas</button>
+    </div>
+  </header>
+
+  <main>
+    <div class="status-row">
+      <span class="date" id="dateLabel"></span>
+      <div class="streak-pill"><span class="streak-dot"></span><span class="label" id="streakLabel"></span></div>
+    </div>
+
+    <div class="cards">
+      <div class="card" id="tmCard">
+        <div class="card-head">
+          <span class="card-tag" style="color: oklch(88% 0.03 80)">TM</span>
+          <span class="card-state" id="tmStateLabel"></span>
+        </div>
+        <div class="card-time" id="tmTimeStr">00:00:00</div>
+        <div class="card-bar"><div class="card-bar-fill" id="tmBarFill" style="background: oklch(78% 0.15 75)"></div></div>
+        <div class="card-goal-row">
+          <span class="goal" id="tmGoalStr"></span>
+          <span class="progress" id="tmProgressStr"></span>
+        </div>
+        <div class="card-row">
+          <button class="step-btn" id="tmMinus5">-5m</button>
+          <button class="step-btn" id="tmPlus5">+5m</button>
+        </div>
+        <div class="card-row">
+          <button class="main-btn" id="tmToggle" style="background: oklch(97% 0 0)"></button>
+          <button class="finalize-btn" id="tmFinalize" style="border-color: oklch(78% 0.15 75 / 0.4); color: oklch(78% 0.15 75)"></button>
+        </div>
+      </div>
+
+      <div class="card" id="mdCard">
+        <div class="card-head">
+          <span class="card-tag" style="color: oklch(65% 0.05 230)">MD</span>
+          <span class="card-state" id="mdStateLabel"></span>
+        </div>
+        <div class="card-time" id="mdTimeStr">00:00:00</div>
+        <div class="card-bar"><div class="card-bar-fill" id="mdBarFill" style="background: oklch(60% 0.11 230)"></div></div>
+        <div class="card-goal-row">
+          <span class="goal" id="mdGoalStr"></span>
+          <span class="progress" id="mdProgressStr"></span>
+        </div>
+        <div class="card-row">
+          <button class="step-btn" id="mdMinus5">-5m</button>
+          <button class="step-btn" id="mdPlus5">+5m</button>
+        </div>
+        <div class="card-row">
+          <button class="main-btn" id="mdToggle" style="background: oklch(97% 0 0)"></button>
+          <button class="finalize-btn" id="mdFinalize" style="border-color: oklch(60% 0.11 230 / 0.4); color: oklch(60% 0.11 230)"></button>
+        </div>
+      </div>
+    </div>
+
+    <div class="week-card">
+      <span class="title">Últimos 7 días</span>
+      <div class="week-bars" id="weekBars"></div>
+    </div>
+
+    <footer class="note">Tus datos se guardan automáticamente en este dispositivo</footer>
+  </main>
+
+  <div class="modal-overlay" id="goalSetupOverlay" hidden>
+    <div class="modal">
+      <div>
+        <div class="goal-title">Meta diaria</div>
+        <div class="goal-desc">Define cuántas horas quieres dedicarle hoy a cada área. Podrás cambiarla luego desde "Editar metas".</div>
+      </div>
+      <div class="goal-row">
+        <span class="goal-tag" style="color: oklch(88% 0.03 80)">TM</span>
+        <div class="goal-stepper">
+          <button id="goalDownTM">−</button>
+          <span id="goalTMVal"></span>
+          <button id="goalUpTM">+</button>
+        </div>
+      </div>
+      <div class="goal-row">
+        <span class="goal-tag" style="color: oklch(65% 0.05 230)">MD</span>
+        <div class="goal-stepper">
+          <button id="goalDownMD">−</button>
+          <span id="goalMDVal"></span>
+          <button id="goalUpMD">+</button>
+        </div>
+      </div>
+      <button class="save-btn" id="confirmGoalsBtn">Guardar metas</button>
+    </div>
+  </div>
+
+  <div class="modal-overlay" id="summaryOverlay" hidden>
+    <div class="modal modal-summary">
+      <div class="modal-head">
+        <span class="title">Resumen de horas</span>
+        <button class="close-btn" id="closeSummaryBtn">&times;</button>
+      </div>
+      <span class="section-label">Por día</span>
+      <div class="summary-list" id="summaryRows"></div>
+      <span class="section-label">Resultado semanal</span>
+      <div class="summary-list" id="weeklyRows"></div>
+      <span class="section-label">Resultado mensual</span>
+      <div class="summary-list" id="monthlyRows"></div>
+    </div>
+  </div>
+</div>
+
+<script>
+(function () {
+  'use strict';
+
+  var STORAGE_KEY = 'tmTimerStoreV1';
+
+  var state = {
+    today: null,
+    tm: { seconds: 0, finalized: false, goal: 4 },
+    md: { seconds: 0, finalized: false, goal: 3 },
+    activeArea: null,
+    sessionStartTs: null,
+    history: [],
+    goalsConfirmed: false,
+    showGoalSetup: false,
+    showSummary: false,
+  };
+
+  function dateKey(d) {
+    var y = d.getFullYear(), m = String(d.getMonth() + 1).padStart(2, '0'), day = String(d.getDate()).padStart(2, '0');
+    return y + '-' + m + '-' + day;
+  }
+
+  function persist() {
+    try {
+      localStorage.setItem(STORAGE_KEY, JSON.stringify({
+        today: state.today, tm: state.tm, md: state.md,
+        history: state.history, activeArea: state.activeArea, sessionStartTs: state.sessionStartTs,
+        goalsConfirmed: state.goalsConfirmed,
+      }));
+    } catch (e) {}
+  }
+
+  function load() {
+    try {
+      var raw = localStorage.getItem(STORAGE_KEY);
+      if (raw) {
+        var d = JSON.parse(raw);
+        var goalsConfirmed = !!d.goalsConfirmed;
+        state.today = d.today || dateKey(new Date());
+        state.tm = d.tm || state.tm;
+        state.md = d.md || state.md;
+        state.history = d.history || [];
+        state.activeArea = d.activeArea || null;
+        state.sessionStartTs = d.sessionStartTs || null;
+        state.goalsConfirmed = goalsConfirmed;
+        state.showGoalSetup = !goalsConfirmed;
+      } else {
+        state.today = dateKey(new Date());
+        state.showGoalSetup = true;
+        persist();
+      }
+    } catch (e) {
+      state.today = dateKey(new Date());
+    }
+    checkRollover();
+  }
+
+  function checkRollover() {
+    var todayKey = dateKey(new Date());
+    if (!state.today) { state.today = todayKey; return; }
+    if (state.today !== todayKey) {
+      var entry = {
+        date: state.today,
+        tmH: state.tm.seconds / 3600, mdH: state.md.seconds / 3600,
+        tmGoal: state.tm.goal, mdGoal: state.md.goal,
+      };
+      state.history = state.history.concat([entry]).slice(-60);
+      state.today = todayKey;
+      state.tm = { seconds: 0, finalized: false, goal: state.tm.goal };
+      state.md = { seconds: 0, finalized: false, goal: state.md.goal };
+      state.activeArea = null;
+      state.sessionStartTs = null;
+      persist();
+    }
+  }
+
+  function toggleArea(area) {
+    var key = area.toLowerCase();
+    if (state[key].finalized) return;
+    var exclusive = true;
+    var now = Date.now();
+    if (state.activeArea === area) {
+      var elapsed = Math.floor((now - state.sessionStartTs) / 1000);
+      state[key] = Object.assign({}, state[key], { seconds: state[key].seconds + elapsed });
+      state.activeArea = null;
+      state.sessionStartTs = null;
+    } else {
+      if (exclusive && state.activeArea) {
+        var otherKey = state.activeArea.toLowerCase();
+        var elapsedOther = Math.floor((now - state.sessionStartTs) / 1000);
+        state[otherKey] = Object.assign({}, state[otherKey], { seconds: state[otherKey].seconds + elapsedOther });
+      }
+      state.activeArea = area;
+      state.sessionStartTs = now;
+    }
+    persist();
+  }
+
+  function finalizeArea(area) {
+    var key = area.toLowerCase();
+    if (state[key].finalized) return;
+    if (state.activeArea === area) {
+      var elapsed = Math.floor((Date.now() - state.sessionStartTs) / 1000);
+      state[key] = Object.assign({}, state[key], { seconds: state[key].seconds + elapsed, finalized: true });
+      state.activeArea = null;
+      state.sessionStartTs = null;
+    } else {
+      state[key] = Object.assign({}, state[key], { finalized: true });
+    }
+    persist();
+  }
+
+  function reactivateArea(area) {
+    var key = area.toLowerCase();
+    if (!state[key].finalized) return;
+    state[key] = Object.assign({}, state[key], { finalized: false });
+    persist();
+  }
+
+  function confirmGoals() {
+    state.goalsConfirmed = true;
+    state.showGoalSetup = false;
+    persist();
+  }
+
+  function adjust(area, deltaMin) {
+    var key = area.toLowerCase();
+    if (state[key].finalized) return;
+    state[key] = Object.assign({}, state[key], { seconds: Math.max(0, state[key].seconds + deltaMin * 60) });
+    persist();
+  }
+
+  function adjustGoal(area, deltaH) {
+    var key = area.toLowerCase();
+    var next = Math.min(12, Math.max(0.5, +(state[key].goal + deltaH).toFixed(1)));
+    state[key] = Object.assign({}, state[key], { goal: next });
+    persist();
+  }
+
+  function liveSeconds(area) {
+    var key = area.toLowerCase();
+    var base = state[key].seconds;
+    if (state.activeArea === area && state.sessionStartTs) return base + (Date.now() - state.sessionStartTs) / 1000;
+    return base;
+  }
+
+  function formatHMS(totalSeconds) {
+    var s = Math.max(0, Math.floor(totalSeconds));
+    var h = String(Math.floor(s / 3600)).padStart(2, '0');
+    var m = String(Math.floor((s % 3600) / 60)).padStart(2, '0');
+    var sec = String(s % 60).padStart(2, '0');
+    return h + ':' + m + ':' + sec;
+  }
+
+  function el(id) { return document.getElementById(id); }
+
+  function render() {
+    if (!state.today) return;
+
+    var tmSec = liveSeconds('TM'), mdSec = liveSeconds('MD');
+    var tmGoalSec = state.tm.goal * 3600, mdGoalSec = state.md.goal * 3600;
+    var tmPct = Math.min(100, (tmSec / tmGoalSec) * 100 || 0);
+    var mdPct = Math.min(100, (mdSec / mdGoalSec) * 100 || 0);
+    var tmActive = state.activeArea === 'TM';
+    var mdActive = state.activeArea === 'MD';
+
+    var todayEntry = { date: state.today, tmH: tmSec / 3600, mdH: mdSec / 3600, tmGoal: state.tm.goal, mdGoal: state.md.goal };
+    var combined = state.history.concat([todayEntry]).sort(function (a, b) { return b.date.localeCompare(a.date); });
+    var streak = 0;
+    for (var i = 0; i < combined.length; i++) {
+      var entry = combined[i];
+      if (entry.tmH + 1e-9 >= entry.tmGoal && entry.mdH + 1e-9 >= entry.mdGoal) streak++;
+      else break;
+    }
+
+    el('dateLabel').textContent = new Date().toLocaleDateString('es-ES', { weekday: 'long', day: 'numeric', month: 'long' });
+    el('streakLabel').textContent = streak === 1 ? '1 día' : streak + ' días';
+
+    el('tmTimeStr').textContent = formatHMS(tmSec);
+    el('mdTimeStr').textContent = formatHMS(mdSec);
+    el('tmBarFill').style.width = tmPct + '%';
+    el('mdBarFill').style.width = mdPct + '%';
+    el('tmGoalStr').textContent = 'Meta ' + state.tm.goal.toFixed(1) + 'h';
+    el('mdGoalStr').textContent = 'Meta ' + state.md.goal.toFixed(1) + 'h';
+    el('tmProgressStr').textContent = (tmSec / 3600).toFixed(1) + 'h / ' + state.tm.goal.toFixed(1) + 'h';
+    el('mdProgressStr').textContent = (mdSec / 3600).toFixed(1) + 'h / ' + state.md.goal.toFixed(1) + 'h';
+
+    el('tmCard').style.borderColor = tmActive ? 'oklch(78% 0.15 75 / 0.6)' : 'oklch(100% 0 0 / 0.06)';
+    el('mdCard').style.borderColor = mdActive ? 'oklch(60% 0.11 230 / 0.6)' : 'oklch(100% 0 0 / 0.06)';
+
+    el('tmStateLabel').textContent = state.tm.finalized ? 'Finalizado' : (tmActive ? 'Activo' : 'Pausado');
+    el('mdStateLabel').textContent = state.md.finalized ? 'Finalizado' : (mdActive ? 'Activo' : 'Pausado');
+    el('tmStateLabel').style.color = state.tm.finalized ? 'oklch(50% 0 0)' : (tmActive ? 'oklch(78% 0.15 75)' : 'oklch(55% 0 0)');
+    el('mdStateLabel').style.color = state.md.finalized ? 'oklch(50% 0 0)' : (mdActive ? 'oklch(60% 0.11 230)' : 'oklch(55% 0 0)');
+
+    el('tmToggle').textContent = state.tm.finalized ? 'Día finalizado' : (tmActive ? 'Pausar' : 'Iniciar TM');
+    el('mdToggle').textContent = state.md.finalized ? 'Día finalizado' : (mdActive ? 'Pausar' : 'Iniciar MD');
+    el('tmToggle').style.background = tmActive ? 'oklch(78% 0.15 75)' : 'oklch(97% 0 0)';
+    el('mdToggle').style.background = mdActive ? 'oklch(60% 0.11 230)' : 'oklch(97% 0 0)';
+    el('tmToggle').disabled = state.tm.finalized;
+    el('mdToggle').disabled = state.md.finalized;
+
+    el('tmFinalize').textContent = state.tm.finalized ? 'Reactivar día TM' : 'Finalizar día TM';
+    el('mdFinalize').textContent = state.md.finalized ? 'Reactivar día MD' : 'Finalizar día MD';
+
+    el('tmMinus5').disabled = state.tm.finalized;
+    el('tmPlus5').disabled = state.tm.finalized;
+    el('mdMinus5').disabled = state.md.finalized;
+    el('mdPlus5').disabled = state.md.finalized;
+
+    // Week chart
+    var days = [];
+    for (var d = 6; d >= 0; d--) {
+      var date = new Date(); date.setDate(date.getDate() - d);
+      var key = dateKey(date);
+      var tmH, mdH;
+      if (key === state.today) { tmH = tmSec / 3600; mdH = mdSec / 3600; }
+      else {
+        var h = state.history.find(function (x) { return x.date === key; });
+        tmH = h ? h.tmH : 0; mdH = h ? h.mdH : 0;
+      }
+      days.push({ key: key, label: date.toLocaleDateString('es-ES', { weekday: 'short' }).replace('.', ''), tmH: tmH, mdH: mdH, isToday: key === state.today });
+    }
+    var scaleMax = Math.max(6, Math.ceil(Math.max.apply(null, days.map(function (x) { return Math.max(x.tmH, x.mdH); }).concat([0.1]))));
+    var weekBarsHtml = days.map(function (dday) {
+      var tmBarPct = Math.min(100, (dday.tmH / scaleMax) * 100);
+      var mdBarPct = Math.min(100, (dday.mdH / scaleMax) * 100);
+      var labelColor = dday.isToday ? 'oklch(90% 0 0)' : 'oklch(45% 0 0)';
+      return '<div class="week-bar-col">' +
+        '<div class="week-bar-pair">' +
+        '<div class="week-bar" style="background: oklch(78% 0.15 75); height: ' + tmBarPct + '%"></div>' +
+        '<div class="week-bar" style="background: oklch(60% 0.11 230); height: ' + mdBarPct + '%"></div>' +
+        '</div>' +
+        '<span class="week-bar-label" style="color: ' + labelColor + '">' + dday.label + '</span>' +
+        '</div>';
+    }).join('');
+    el('weekBars').innerHTML = weekBarsHtml;
+
+    // Goal setup
+    el('goalSetupOverlay').hidden = !state.showGoalSetup;
+    el('goalTMVal').textContent = state.tm.goal.toFixed(1) + 'h';
+    el('goalMDVal').textContent = state.md.goal.toFixed(1) + 'h';
+
+    // Summary
+    el('summaryOverlay').hidden = !state.showSummary;
+    if (state.showSummary) {
+      var summaryRows = combined.slice(0, 30).map(function (e) {
+        var dateLabel = e.date === state.today ? 'Hoy' : new Date(e.date + 'T00:00:00').toLocaleDateString('es-ES', { day: 'numeric', month: 'short' });
+        var tmColor = e.tmH + 1e-9 >= e.tmGoal ? 'oklch(88% 0.03 80)' : 'oklch(65% 0 0)';
+        var mdColor = e.mdH + 1e-9 >= e.mdGoal ? 'oklch(65% 0.05 230)' : 'oklch(65% 0 0)';
+        return '<div class="summary-row">' +
+          '<span class="label">' + dateLabel + '</span>' +
+          '<div class="summary-metric"><span class="summary-dot" style="background: oklch(78% 0.15 75)"></span><span class="val" style="color:' + tmColor + '">' + e.tmH.toFixed(1) + 'h</span></div>' +
+          '<div class="summary-metric"><span class="summary-dot" style="background: oklch(60% 0.11 230)"></span><span class="val" style="color:' + mdColor + '">' + e.mdH.toFixed(1) + 'h</span></div>' +
+          '</div>';
+      }).join('');
+      el('summaryRows').innerHTML = summaryRows;
+
+      var weekMap = new Map();
+      combined.forEach(function (e) {
+        var d2 = new Date(e.date + 'T00:00:00');
+        var dow = d2.getDay();
+        var monday = new Date(d2);
+        monday.setDate(d2.getDate() + (dow === 0 ? -6 : 1 - dow));
+        var wKey = dateKey(monday);
+        if (!weekMap.has(wKey)) weekMap.set(wKey, { sortKey: wKey, label: 'Semana', tmH: 0, mdH: 0 });
+        var w = weekMap.get(wKey);
+        w.tmH += e.tmH; w.mdH += e.mdH;
+      });
+      var weeklyRows = Array.from(weekMap.values()).sort(function (a, b) { return b.sortKey.localeCompare(a.sortKey); })
+        .map(function (w) {
+          return '<div class="summary-row">' +
+            '<span class="label">' + w.label + '</span>' +
+            '<div class="summary-metric"><span class="summary-dot" style="background: oklch(78% 0.15 75)"></span><span class="val">' + w.tmH.toFixed(1) + 'h</span></div>' +
+            '<div class="summary-metric"><span class="summary-dot" style="background: oklch(60% 0.11 230)"></span><span class="val">' + w.mdH.toFixed(1) + 'h</span></div>' +
+            '</div>';
+        }).join('');
+      el('weeklyRows').innerHTML = weeklyRows;
+
+      var monthMap = new Map();
+      combined.forEach(function (e) {
+        var d3 = new Date(e.date + 'T00:00:00');
+        var mKey = d3.getFullYear() + '-' + String(d3.getMonth() + 1).padStart(2, '0');
+        if (!monthMap.has(mKey)) {
+          var monthName = d3.toLocaleDateString('es-ES', { month: 'long' });
+          var monthLabel = monthName.charAt(0).toUpperCase() + monthName.slice(1);
+          monthMap.set(mKey, { sortKey: mKey, label: monthLabel + ' ' + d3.getFullYear(), tmH: 0, mdH: 0 });
+        }
+        var m = monthMap.get(mKey);
+        m.tmH += e.tmH; m.mdH += e.mdH;
+      });
+      var monthlyRows = Array.from(monthMap.values()).sort(function (a, b) { return b.sortKey.localeCompare(a.sortKey); })
+        .map(function (m) {
+          return '<div class="summary-row">' +
+            '<span class="label">' + m.label + '</span>' +
+            '<div class="summary-metric"><span class="summary-dot" style="background: oklch(78% 0.15 75)"></span><span class="val">' + m.tmH.toFixed(1) + 'h</span></div>' +
+            '<div class="summary-metric"><span class="summary-dot" style="background: oklch(60% 0.11 230)"></span><span class="val">' + m.mdH.toFixed(1) + 'h</span></div>' +
+            '</div>';
+        }).join('');
+      el('monthlyRows').innerHTML = monthlyRows;
+    }
+  }
+
+  function bind() {
+    el('editGoalsBtn').addEventListener('click', function () { state.showGoalSetup = true; render(); });
+    el('openSummaryBtn').addEventListener('click', function () { state.showSummary = true; render(); });
+    el('closeSummaryBtn').addEventListener('click', function () { state.showSummary = false; render(); });
+    el('summaryOverlay').addEventListener('click', function (e) { if (e.target === el('summaryOverlay')) { state.showSummary = false; render(); } });
+
+    el('confirmGoalsBtn').addEventListener('click', function () { confirmGoals(); render(); });
+    el('goalUpTM').addEventListener('click', function () { adjustGoal('TM', 0.5); render(); });
+    el('goalDownTM').addEventListener('click', function () { adjustGoal('TM', -0.5); render(); });
+    el('goalUpMD').addEventListener('click', function () { adjustGoal('MD', 0.5); render(); });
+    el('goalDownMD').addEventListener('click', function () { adjustGoal('MD', -0.5); render(); });
+
+    el('tmToggle').addEventListener('click', function () { toggleArea('TM'); render(); });
+    el('mdToggle').addEventListener('click', function () { toggleArea('MD'); render(); });
+    el('tmFinalize').addEventListener('click', function () { state.tm.finalized ? reactivateArea('TM') : finalizeArea('TM'); render(); });
+    el('mdFinalize').addEventListener('click', function () { state.md.finalized ? reactivateArea('MD') : finalizeArea('MD'); render(); });
+    el('tmMinus5').addEventListener('click', function () { adjust('TM', -5); render(); });
+    el('tmPlus5').addEventListener('click', function () { adjust('TM', 5); render(); });
+    el('mdMinus5').addEventListener('click', function () { adjust('MD', -5); render(); });
+    el('mdPlus5').addEventListener('click', function () { adjust('MD', 5); render(); });
+  }
+
+  load();
+  bind();
+  render();
+  setInterval(function () { checkRollover(); render(); }, 1000);
+})();
+</script>
+</body>
+</html>
