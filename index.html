@@ -100,7 +100,7 @@
     transition: border-color 0.2s ease;
   }
   .card-head { display: flex; align-items: center; justify-content: space-between; }
-  .card-tag { font-weight: 600; font-size: 15px; letter-spacing: 0.24em; text-transform: uppercase; }
+  .card-tag { font-weight: 600; font-size: 15px; letter-spacing: 0; text-transform: uppercase; }
   .card-state { font-size: 11px; font-weight: 600; text-transform: uppercase; letter-spacing: 0.08em; }
   .card-time { color: oklch(97% 0 0); font-size: clamp(34px, 5vw, 50px); font-weight: 600; font-variant-numeric: tabular-nums; letter-spacing: 0.01em; }
   .card-bar { height: 7px; border-radius: 4px; background: oklch(20% 0 0); overflow: hidden; }
@@ -564,7 +564,7 @@
 
     el('tmToggle').textContent = state.tm.finalized ? 'Día finalizado' : (tmActive ? 'Pausar' : 'Iniciar TM');
     el('mdToggle').textContent = state.md.finalized ? 'Día finalizado' : (mdActive ? 'Pausar' : 'Iniciar MD');
-    el('dpToggle').textContent = state.deporte.finalized ? 'Día finalizado' : (dpActive ? 'Pausar' : 'Iniciar Deporte');
+    el('dpToggle').textContent = state.deporte.finalized ? 'Día finalizado' : (dpActive ? 'Pausar' : 'Iniciar');
     el('tmToggle').style.background = tmActive ? TM_ACCENT : INACTIVE_BG;
     el('mdToggle').style.background = mdActive ? MD_ACCENT : INACTIVE_BG;
     el('dpToggle').style.background = dpActive ? DP_ACCENT : INACTIVE_BG;
@@ -688,20 +688,27 @@
 
       var weekEntries;
       if (state.showAllWeeks) {
+        var daysInMonthForWeeks = new Date(currentYear, currentMonth + 1, 0).getDate();
         var monthWeekMap = new Map();
-        combined.forEach(function (e) {
-          var ed = new Date(e.date + 'T00:00:00');
-          if (ed.getFullYear() !== currentYear || ed.getMonth() !== currentMonth) return;
-          var edow = ed.getDay();
-          var edMonday = new Date(ed);
-          edMonday.setDate(ed.getDate() + (edow === 0 ? -6 : 1 - edow));
-          var wk = dateKey(edMonday);
-          if (!monthWeekMap.has(wk)) monthWeekMap.set(wk, { sortKey: wk, tmH: 0, mdH: 0, dpH: 0 });
-          var mw = monthWeekMap.get(wk);
-          mw.tmH += e.tmH; mw.mdH += e.mdH; mw.dpH += (e.dpH || 0);
+        var weekOrder = [];
+        for (var wd = 1; wd <= daysInMonthForWeeks; wd++) {
+          var wDate = new Date(currentYear, currentMonth, wd);
+          var wdow = wDate.getDay();
+          var wMonday = new Date(wDate);
+          wMonday.setDate(wDate.getDate() + (wdow === 0 ? -6 : 1 - wdow));
+          var wk = dateKey(wMonday);
+          if (!monthWeekMap.has(wk)) { monthWeekMap.set(wk, { sortKey: wk, tmH: 0, mdH: 0, dpH: 0 }); weekOrder.push(wk); }
+          var dKeyForWeek = dateKey(wDate);
+          var foundW = combined.find(function (x) { return x.date === dKeyForWeek; });
+          if (foundW) {
+            var mw = monthWeekMap.get(wk);
+            mw.tmH += foundW.tmH; mw.mdH += foundW.mdH; mw.dpH += (foundW.dpH || 0);
+          }
+        }
+        weekEntries = weekOrder.map(function (wk, idx) {
+          var w = monthWeekMap.get(wk);
+          return { label: 'Semana ' + (idx + 1), tmH: w.tmH, mdH: w.mdH, dpH: w.dpH };
         });
-        weekEntries = Array.from(monthWeekMap.values()).sort(function (a, b) { return a.sortKey.localeCompare(b.sortKey); })
-          .map(function (w, idx) { return { label: 'Semana ' + (idx + 1), tmH: w.tmH, mdH: w.mdH, dpH: w.dpH }; });
       } else {
         weekEntries = Array.from(weekMap.values()).sort(function (a, b) { return b.sortKey.localeCompare(a.sortKey); }).slice(0, 3)
           .map(function (w) { return { label: w.label, tmH: w.tmH, mdH: w.mdH, dpH: w.dpH }; });
