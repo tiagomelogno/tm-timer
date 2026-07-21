@@ -10,7 +10,7 @@
 <title>Timer TM</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700;800&display=swap">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800&display=swap">
 <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='14' fill='%230a0a0a'/%3E%3Ctext x='32' y='40' font-family='Arial, sans-serif' font-weight='800' font-size='22' fill='%23e8ba98' text-anchor='middle'%3ETM%3C/text%3E%3C/svg%3E">
 <style>
   * { box-sizing: border-box; }
@@ -97,8 +97,8 @@
     transition: border-color 0.2s ease;
   }
   .card-head { display: flex; align-items: center; justify-content: space-between; }
-  .card-tag { font-weight: 800; font-size: 15px; letter-spacing: 0.24em; }
-  .card-state { font-size: 11px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.08em; }
+  .card-tag { font-weight: 600; font-size: 15px; letter-spacing: 0.24em; text-transform: uppercase; }
+  .card-state { font-size: 11px; font-weight: 600; text-transform: uppercase; letter-spacing: 0.08em; }
   .card-time { color: oklch(97% 0 0); font-size: clamp(38px, 6vw, 50px); font-weight: 600; font-variant-numeric: tabular-nums; letter-spacing: 0.01em; }
   .card-bar { height: 7px; border-radius: 4px; background: oklch(20% 0 0); overflow: hidden; }
   .card-bar-fill { height: 100%; border-radius: 4px; transition: width 0.3s ease; }
@@ -114,12 +114,12 @@
   .step-btn:disabled { opacity: 0.4; cursor: not-allowed; }
   .main-btn {
     flex: 1; padding: 13px 0; border-radius: 11px; border: none;
-    color: oklch(6% 0 0); font-size: 14px; font-weight: 800; letter-spacing: 0.04em; cursor: pointer;
+    color: oklch(6% 0 0); font-size: 13px; font-weight: 600; letter-spacing: 0.06em; text-transform: uppercase; cursor: pointer;
   }
   .main-btn:disabled { opacity: 0.4; cursor: not-allowed; }
   .finalize-btn {
     flex: 1; padding: 13px 0; border-radius: 11px; border: 1px solid; background: transparent;
-    font-size: 12px; font-weight: 700; cursor: pointer;
+    font-size: 11px; font-weight: 600; letter-spacing: 0.06em; text-transform: uppercase; cursor: pointer;
   }
 
   .week-card { background: oklch(11% 0 0); border-radius: 18px; padding: 20px; display: flex; flex-direction: column; gap: 12px; }
@@ -144,12 +144,12 @@
   .modal-summary { max-width: 460px; max-height: 80vh; overflow-y: auto; }
 
   .goal-title { color: oklch(97% 0 0); font-weight: 700; font-size: 14px; letter-spacing: 0.1em; text-transform: uppercase; }
-  .goal-desc { color: oklch(55% 0 0); font-size: 12px; line-height: 1.5; }
+  .goal-desc { color: oklch(55% 0 0); font-size: 12px; font-weight: 300; line-height: 1.5; }
   .goal-row {
     display: flex; align-items: center; justify-content: space-between;
     background: oklch(12% 0 0); border-radius: 11px; padding: 12px 16px;
   }
-  .goal-tag { font-weight: 800; font-size: 13px; letter-spacing: 0.2em; }
+  .goal-tag { font-weight: 600; font-size: 13px; letter-spacing: 0.2em; text-transform: uppercase; }
   .goal-stepper { display: flex; align-items: center; gap: 12px; }
   .goal-stepper button {
     width: 30px; height: 30px; border-radius: 8px; border: 1px solid oklch(30% 0 0);
@@ -166,8 +166,8 @@
   .close-btn { border: none; background: transparent; color: oklch(60% 0 0); font-size: 20px; cursor: pointer; line-height: 1; padding: 0; }
   .section-head { display: flex; align-items: center; justify-content: space-between; margin-top: 6px; }
   .section-label { color: oklch(48% 0 0); font-size: 10px; letter-spacing: 0.14em; text-transform: uppercase; }
-  .link-btn { border: none; background: transparent; cursor: pointer; color: oklch(65% 0.05 230); font-size: 10px; font-weight: 700; letter-spacing: 0.04em; text-transform: uppercase; padding: 0; }
-  .link-btn:hover { color: oklch(80% 0.05 230); }
+  .link-btn { border: none; background: transparent; cursor: pointer; color: oklch(97% 0 0); font-size: 10px; font-weight: 600; letter-spacing: 0.04em; text-transform: uppercase; padding: 0; }
+  .link-btn:hover { color: oklch(75% 0 0); }
   .summary-list { display: flex; flex-direction: column; gap: 8px; }
   .summary-row { display: flex; align-items: center; justify-content: space-between; padding: 12px 14px; background: oklch(12% 0 0); border-radius: 11px; }
   .summary-row .label { color: oklch(85% 0 0); font-size: 12px; min-width: 120px; text-transform: capitalize; }
@@ -195,7 +195,7 @@
     <div class="cards">
       <div class="card" id="tmCard">
         <div class="card-head">
-          <span class="card-tag" style="color: oklch(88% 0.03 80)">TM</span>
+          <span class="card-tag" style="color: oklch(70% 0 0)">TM</span>
           <span class="card-state" id="tmStateLabel"></span>
         </div>
         <div class="card-time" id="tmTimeStr">00:00:00</div>
@@ -210,13 +210,13 @@
         </div>
         <div class="card-row">
           <button class="main-btn" id="tmToggle" style="background: oklch(97% 0 0)"></button>
-          <button class="finalize-btn" id="tmFinalize" style="border-color: oklch(78% 0.15 75 / 0.4); color: oklch(78% 0.15 75)"></button>
+          <button class="finalize-btn" id="tmFinalize" style="border-color: oklch(50% 0 0 / 0.4); color: oklch(78% 0 0)"></button>
         </div>
       </div>
 
       <div class="card" id="mdCard">
         <div class="card-head">
-          <span class="card-tag" style="color: oklch(65% 0.05 230)">MD</span>
+          <span class="card-tag" style="color: oklch(70% 0 0)">MD</span>
           <span class="card-state" id="mdStateLabel"></span>
         </div>
         <div class="card-time" id="mdTimeStr">00:00:00</div>
@@ -231,7 +231,7 @@
         </div>
         <div class="card-row">
           <button class="main-btn" id="mdToggle" style="background: oklch(97% 0 0)"></button>
-          <button class="finalize-btn" id="mdFinalize" style="border-color: oklch(60% 0.11 230 / 0.4); color: oklch(60% 0.11 230)"></button>
+          <button class="finalize-btn" id="mdFinalize" style="border-color: oklch(50% 0 0 / 0.4); color: oklch(78% 0 0)"></button>
         </div>
       </div>
     </div>
@@ -251,7 +251,7 @@
         <div class="goal-desc">Define cuántas horas quieres dedicarle hoy a cada área. Podrás cambiarla luego desde "Editar metas".</div>
       </div>
       <div class="goal-row">
-        <span class="goal-tag" style="color: oklch(88% 0.03 80)">TM</span>
+        <span class="goal-tag" style="color: oklch(70% 0 0)">TM</span>
         <div class="goal-stepper">
           <button id="goalDownTM">−</button>
           <span id="goalTMVal"></span>
@@ -259,7 +259,7 @@
         </div>
       </div>
       <div class="goal-row">
-        <span class="goal-tag" style="color: oklch(65% 0.05 230)">MD</span>
+        <span class="goal-tag" style="color: oklch(70% 0 0)">MD</span>
         <div class="goal-stepper">
           <button id="goalDownMD">−</button>
           <span id="goalMDVal"></span>
@@ -276,9 +276,15 @@
         <span class="title">Resumen de horas</span>
         <button class="close-btn" id="closeSummaryBtn">&times;</button>
       </div>
-      <span class="section-label">Por día</span>
+      <div class="section-head">
+        <span class="section-label">Por día</span>
+        <button class="link-btn" id="toggleAllDaysBtn">Ver todos los días del mes</button>
+      </div>
       <div class="summary-list" id="summaryRows"></div>
-      <span class="section-label" style="margin-top: 6px">Resultado semanal</span>
+      <div class="section-head">
+        <span class="section-label">Resultado semanal</span>
+        <button class="link-btn" id="toggleAllWeeksBtn">Ver todas las semanas del mes</button>
+      </div>
       <div class="summary-list" id="weeklyRows"></div>
       <div class="section-head">
         <span class="section-label">Resultado mensual</span>
@@ -305,10 +311,22 @@
     goalsConfirmed: false,
     showGoalSetup: false,
     showSummary: false,
+    showAllDays: false,
+    showAllWeeks: false,
     showAllMonths: false,
   };
 
   var HISTORY_DAYS = 400;
+
+  var GRAY_TAG = 'oklch(70% 0 0)';
+  var GRAY_DOT = 'oklch(60% 0 0)';
+  var GRAY_BRIGHT = 'oklch(92% 0 0)';
+  var GRAY_DIM = 'oklch(55% 0 0)';
+  var GRAY_ACTIVE_BORDER = 'oklch(55% 0 0 / 0.5)';
+  var GRAY_INACTIVE_BORDER = 'oklch(100% 0 0 / 0.06)';
+  var GRAY_ACTIVE_TEXT = 'oklch(92% 0 0)';
+  var GRAY_ACTIVE_BG = 'oklch(75% 0 0)';
+  var GRAY_INACTIVE_BG = 'oklch(97% 0 0)';
 
   function dateKey(d) {
     var y = d.getFullYear(), m = String(d.getMonth() + 1).padStart(2, '0'), day = String(d.getDate()).padStart(2, '0');
@@ -489,18 +507,18 @@
     el('tmProgressStr').textContent = formatDuration(tmSec / 3600) + ' / ' + formatDuration(state.tm.goal);
     el('mdProgressStr').textContent = formatDuration(mdSec / 3600) + ' / ' + formatDuration(state.md.goal);
 
-    el('tmCard').style.borderColor = tmActive ? 'oklch(78% 0.15 75 / 0.6)' : 'oklch(100% 0 0 / 0.06)';
-    el('mdCard').style.borderColor = mdActive ? 'oklch(60% 0.11 230 / 0.6)' : 'oklch(100% 0 0 / 0.06)';
+    el('tmCard').style.borderColor = tmActive ? GRAY_ACTIVE_BORDER : GRAY_INACTIVE_BORDER;
+    el('mdCard').style.borderColor = mdActive ? GRAY_ACTIVE_BORDER : GRAY_INACTIVE_BORDER;
 
     el('tmStateLabel').textContent = state.tm.finalized ? 'Finalizado' : (tmActive ? 'Activo' : 'Pausado');
     el('mdStateLabel').textContent = state.md.finalized ? 'Finalizado' : (mdActive ? 'Activo' : 'Pausado');
-    el('tmStateLabel').style.color = state.tm.finalized ? 'oklch(50% 0 0)' : (tmActive ? 'oklch(78% 0.15 75)' : 'oklch(55% 0 0)');
-    el('mdStateLabel').style.color = state.md.finalized ? 'oklch(50% 0 0)' : (mdActive ? 'oklch(60% 0.11 230)' : 'oklch(55% 0 0)');
+    el('tmStateLabel').style.color = state.tm.finalized ? 'oklch(50% 0 0)' : (tmActive ? GRAY_ACTIVE_TEXT : 'oklch(55% 0 0)');
+    el('mdStateLabel').style.color = state.md.finalized ? 'oklch(50% 0 0)' : (mdActive ? GRAY_ACTIVE_TEXT : 'oklch(55% 0 0)');
 
     el('tmToggle').textContent = state.tm.finalized ? 'Día finalizado' : (tmActive ? 'Pausar' : 'Iniciar TM');
     el('mdToggle').textContent = state.md.finalized ? 'Día finalizado' : (mdActive ? 'Pausar' : 'Iniciar MD');
-    el('tmToggle').style.background = tmActive ? 'oklch(78% 0.15 75)' : 'oklch(97% 0 0)';
-    el('mdToggle').style.background = mdActive ? 'oklch(60% 0.11 230)' : 'oklch(97% 0 0)';
+    el('tmToggle').style.background = tmActive ? GRAY_ACTIVE_BG : GRAY_INACTIVE_BG;
+    el('mdToggle').style.background = mdActive ? GRAY_ACTIVE_BG : GRAY_INACTIVE_BG;
     el('tmToggle').disabled = state.tm.finalized;
     el('mdToggle').disabled = state.md.finalized;
 
@@ -536,8 +554,8 @@
       var labelColor = dday.isToday ? 'oklch(90% 0 0)' : 'oklch(45% 0 0)';
       return '<div class="week-bar-col">' +
         '<div class="week-bar-pair">' +
-        '<div class="week-bar" style="background: oklch(78% 0.15 75); height: ' + tmBarPct + '%"></div>' +
-        '<div class="week-bar" style="background: oklch(60% 0.11 230); height: ' + mdBarPct + '%"></div>' +
+        '<div class="week-bar" style="background: ' + GRAY_DOT + '; height: ' + tmBarPct + '%"></div>' +
+        '<div class="week-bar" style="background: ' + GRAY_DOT + '; height: ' + mdBarPct + '%"></div>' +
         '</div>' +
         '<span class="week-bar-label" style="color: ' + labelColor + '">' + dday.label + '</span>' +
         '</div>';
@@ -552,18 +570,46 @@
     // Summary
     el('summaryOverlay').hidden = !state.showSummary;
     if (state.showSummary) {
-      var summaryRows = combined.slice(0, 30).map(function (e) {
-        var dateLabel = e.date === state.today ? 'Hoy' : new Date(e.date + 'T00:00:00').toLocaleDateString('es-ES', { day: 'numeric', month: 'short' });
-        var tmColor = e.tmH + 1e-9 >= e.tmGoal ? 'oklch(88% 0.03 80)' : 'oklch(65% 0 0)';
-        var mdColor = e.mdH + 1e-9 >= e.mdGoal ? 'oklch(65% 0.05 230)' : 'oklch(65% 0 0)';
-        return '<div class="summary-row">' +
-          '<span class="label">' + dateLabel + '</span>' +
-          '<div class="summary-metric"><span class="summary-dot" style="background: oklch(78% 0.15 75)"></span><span class="val" style="color:' + tmColor + '">' + formatDuration(e.tmH) + '</span></div>' +
-          '<div class="summary-metric"><span class="summary-dot" style="background: oklch(60% 0.11 230)"></span><span class="val" style="color:' + mdColor + '">' + formatDuration(e.mdH) + '</span></div>' +
-          '</div>';
-      }).join('');
-      el('summaryRows').innerHTML = summaryRows;
+      var nowRef = new Date();
+      var currentYear = nowRef.getFullYear();
+      var currentMonth = nowRef.getMonth();
 
+      function rowHtml(label, tmH, mdH, tmGoalV, mdGoalV, highlight) {
+        var tmColor = highlight ? (tmH + 1e-9 >= tmGoalV ? GRAY_BRIGHT : GRAY_DIM) : GRAY_BRIGHT;
+        var mdColor = highlight ? (mdH + 1e-9 >= mdGoalV ? GRAY_BRIGHT : GRAY_DIM) : GRAY_BRIGHT;
+        return '<div class="summary-row">' +
+          '<span class="label">' + label + '</span>' +
+          '<div class="summary-metric"><span class="summary-dot" style="background: ' + GRAY_DOT + '"></span><span class="val" style="color:' + tmColor + '">' + formatDuration(tmH) + '</span></div>' +
+          '<div class="summary-metric"><span class="summary-dot" style="background: ' + GRAY_DOT + '"></span><span class="val" style="color:' + mdColor + '">' + formatDuration(mdH) + '</span></div>' +
+          '</div>';
+      }
+
+      // Por día
+      var dayEntries;
+      if (state.showAllDays) {
+        var daysInMonth = new Date(currentYear, currentMonth + 1, 0).getDate();
+        dayEntries = [];
+        for (var dd = 1; dd <= daysInMonth; dd++) {
+          var dKey = currentYear + '-' + String(currentMonth + 1).padStart(2, '0') + '-' + String(dd).padStart(2, '0');
+          var foundDay = combined.find(function (x) { return x.date === dKey; });
+          dayEntries.push({
+            label: dKey === state.today ? 'Hoy' : String(dd),
+            tmH: foundDay ? foundDay.tmH : 0, mdH: foundDay ? foundDay.mdH : 0,
+            tmGoal: foundDay ? foundDay.tmGoal : state.tm.goal, mdGoal: foundDay ? foundDay.mdGoal : state.md.goal,
+          });
+        }
+      } else {
+        dayEntries = combined.slice(0, 7).map(function (e) {
+          return {
+            label: e.date === state.today ? 'Hoy' : new Date(e.date + 'T00:00:00').toLocaleDateString('es-ES', { day: 'numeric', month: 'short' }),
+            tmH: e.tmH, mdH: e.mdH, tmGoal: e.tmGoal, mdGoal: e.mdGoal,
+          };
+        });
+      }
+      el('summaryRows').innerHTML = dayEntries.map(function (e) { return rowHtml(e.label, e.tmH, e.mdH, e.tmGoal, e.mdGoal, true); }).join('');
+      el('toggleAllDaysBtn').textContent = state.showAllDays ? 'Ver menos' : 'Ver todos los días del mes';
+
+      // Resultado semanal
       var weekMap = new Map();
       combined.forEach(function (e) {
         var d2 = new Date(e.date + 'T00:00:00');
@@ -571,20 +617,35 @@
         var monday = new Date(d2);
         monday.setDate(d2.getDate() + (dow === 0 ? -6 : 1 - dow));
         var wKey = dateKey(monday);
-        if (!weekMap.has(wKey)) weekMap.set(wKey, { sortKey: wKey, label: 'Semana', tmH: 0, mdH: 0 });
+        if (!weekMap.has(wKey)) weekMap.set(wKey, { sortKey: wKey, label: 'Semana del ' + monday.toLocaleDateString('es-ES', { day: 'numeric', month: 'short' }), tmH: 0, mdH: 0 });
         var w = weekMap.get(wKey);
         w.tmH += e.tmH; w.mdH += e.mdH;
       });
-      var weeklyRows = Array.from(weekMap.values()).sort(function (a, b) { return b.sortKey.localeCompare(a.sortKey); })
-        .map(function (w) {
-          return '<div class="summary-row">' +
-            '<span class="label">' + w.label + '</span>' +
-            '<div class="summary-metric"><span class="summary-dot" style="background: oklch(78% 0.15 75)"></span><span class="val">' + formatDuration(w.tmH) + '</span></div>' +
-            '<div class="summary-metric"><span class="summary-dot" style="background: oklch(60% 0.11 230)"></span><span class="val">' + formatDuration(w.mdH) + '</span></div>' +
-            '</div>';
-        }).join('');
-      el('weeklyRows').innerHTML = weeklyRows;
 
+      var weekEntries;
+      if (state.showAllWeeks) {
+        var monthWeekMap = new Map();
+        combined.forEach(function (e) {
+          var ed = new Date(e.date + 'T00:00:00');
+          if (ed.getFullYear() !== currentYear || ed.getMonth() !== currentMonth) return;
+          var edow = ed.getDay();
+          var edMonday = new Date(ed);
+          edMonday.setDate(ed.getDate() + (edow === 0 ? -6 : 1 - edow));
+          var wk = dateKey(edMonday);
+          if (!monthWeekMap.has(wk)) monthWeekMap.set(wk, { sortKey: wk, tmH: 0, mdH: 0 });
+          var mw = monthWeekMap.get(wk);
+          mw.tmH += e.tmH; mw.mdH += e.mdH;
+        });
+        weekEntries = Array.from(monthWeekMap.values()).sort(function (a, b) { return a.sortKey.localeCompare(b.sortKey); })
+          .map(function (w, idx) { return { label: 'Semana ' + (idx + 1), tmH: w.tmH, mdH: w.mdH }; });
+      } else {
+        weekEntries = Array.from(weekMap.values()).sort(function (a, b) { return b.sortKey.localeCompare(a.sortKey); }).slice(0, 3)
+          .map(function (w) { return { label: w.label, tmH: w.tmH, mdH: w.mdH }; });
+      }
+      el('weeklyRows').innerHTML = weekEntries.map(function (w) { return rowHtml(w.label, w.tmH, w.mdH, 0, 0, false); }).join('');
+      el('toggleAllWeeksBtn').textContent = state.showAllWeeks ? 'Ver menos' : 'Ver todas las semanas del mes';
+
+      // Resultado mensual
       var monthMap = new Map();
       combined.forEach(function (e) {
         var d3 = new Date(e.date + 'T00:00:00');
@@ -598,12 +659,11 @@
         m.tmH += e.tmH; m.mdH += e.mdH;
       });
 
-      var currentYear = new Date().getFullYear();
       var monthEntries;
       if (state.showAllMonths) {
         var monthNamesEs = ['enero', 'febrero', 'marzo', 'abril', 'mayo', 'junio', 'julio', 'agosto', 'septiembre', 'octubre', 'noviembre', 'diciembre'];
         monthEntries = [];
-        for (var mi = 11; mi >= 0; mi--) {
+        for (var mi = 0; mi <= 11; mi++) {
           var mKey2 = currentYear + '-' + String(mi + 1).padStart(2, '0');
           var found = monthMap.get(mKey2);
           var label2 = monthNamesEs[mi].charAt(0).toUpperCase() + monthNamesEs[mi].slice(1) + ' ' + currentYear;
@@ -612,15 +672,7 @@
       } else {
         monthEntries = Array.from(monthMap.values()).sort(function (a, b) { return b.sortKey.localeCompare(a.sortKey); }).slice(0, 3);
       }
-
-      var monthlyRows = monthEntries.map(function (m) {
-          return '<div class="summary-row">' +
-            '<span class="label">' + m.label + '</span>' +
-            '<div class="summary-metric"><span class="summary-dot" style="background: oklch(78% 0.15 75)"></span><span class="val">' + formatDuration(m.tmH) + '</span></div>' +
-            '<div class="summary-metric"><span class="summary-dot" style="background: oklch(60% 0.11 230)"></span><span class="val">' + formatDuration(m.mdH) + '</span></div>' +
-            '</div>';
-        }).join('');
-      el('monthlyRows').innerHTML = monthlyRows;
+      el('monthlyRows').innerHTML = monthEntries.map(function (m) { return rowHtml(m.label, m.tmH, m.mdH, 0, 0, false); }).join('');
       el('toggleAllMonthsBtn').textContent = state.showAllMonths ? 'Ver menos' : 'Ver todos los meses del año';
     }
   }
@@ -631,6 +683,8 @@
     el('closeSummaryBtn').addEventListener('click', function () { state.showSummary = false; render(); });
     el('summaryOverlay').addEventListener('click', function (e) { if (e.target === el('summaryOverlay')) { state.showSummary = false; render(); } });
     el('toggleAllMonthsBtn').addEventListener('click', function () { state.showAllMonths = !state.showAllMonths; render(); });
+    el('toggleAllDaysBtn').addEventListener('click', function () { state.showAllDays = !state.showAllDays; render(); });
+    el('toggleAllWeeksBtn').addEventListener('click', function () { state.showAllWeeks = !state.showAllWeeks; render(); });
 
     el('confirmGoalsBtn').addEventListener('click', function () { confirmGoals(); render(); });
     el('goalUpTM').addEventListener('click', function () { adjustGoal('TM', 0.5); render(); });
