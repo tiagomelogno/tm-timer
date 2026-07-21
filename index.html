@@ -54,7 +54,7 @@
   }
   .wordmark { display: flex; align-items: center; gap: 12px; }
   .wordmark .mark { height: 34px; width: auto; display: block; }
-  .wordmark .name { color: oklch(95% 0 0); font-weight: 700; font-size: 15px; letter-spacing: 0.02em; }
+  .wordmark .name { color: oklch(95% 0 0); font-weight: 400; font-size: 14px; letter-spacing: 0.18em; text-transform: uppercase; }
   .wordmark .role { color: oklch(50% 0 0); font-weight: 500; font-size: 12px; letter-spacing: 0.01em; }
   .header-actions { display: flex; align-items: center; gap: 10px; flex-wrap: wrap; }
   .ghost-btn {
@@ -63,7 +63,7 @@
     padding: 9px 14px;
     border-radius: 9px;
     font-size: 11px;
-    font-weight: 700;
+    font-weight: 500;
     letter-spacing: 0.06em;
     text-transform: uppercase;
     background: transparent;
@@ -92,7 +92,7 @@
     background: oklch(11% 0 0); padding: 6px 14px; border-radius: 20px;
   }
   .streak-dot { width: 7px; height: 7px; border-radius: 50%; background: oklch(97% 0 0); }
-  .streak-pill span.label { color: oklch(90% 0 0); font-size: 13px; font-weight: 700; }
+  .streak-pill span.label { color: oklch(90% 0 0); font-size: 13px; font-weight: 500; }
 
   .cards {
     display: grid;
@@ -107,7 +107,7 @@
   }
 
   .card {
-    background: oklch(11% 0 0);
+    background: oklch(11% 0 0 / 0.92);
     border: 1px solid oklch(100% 0 0 / 0.06);
     border-radius: 18px;
     padding: 22px;
@@ -117,32 +117,32 @@
     transition: border-color 0.2s ease;
   }
   .card-head { display: flex; align-items: center; justify-content: space-between; }
-  .card-tag { font-weight: 600; font-size: 15px; letter-spacing: 0; text-transform: uppercase; }
-  .card-state { font-size: 11px; font-weight: 600; text-transform: uppercase; letter-spacing: 0.08em; }
-  .card-time { color: oklch(97% 0 0); font-size: clamp(34px, 5vw, 50px); font-weight: 600; font-variant-numeric: tabular-nums; letter-spacing: 0.01em; }
+  .card-tag { font-weight: 500; font-size: 14px; letter-spacing: 0; text-transform: uppercase; }
+  .card-state { font-size: 10px; font-weight: 500; text-transform: uppercase; letter-spacing: 0.08em; }
+  .card-time { color: oklch(97% 0 0); font-size: clamp(30px, 4.5vw, 44px); font-weight: 500; font-variant-numeric: tabular-nums; letter-spacing: 0.01em; }
   .card-bar { height: 7px; border-radius: 4px; background: oklch(20% 0 0); overflow: hidden; }
   .card-bar-fill { height: 100%; border-radius: 4px; transition: width 0.3s ease; }
   .card-goal-row { display: flex; align-items: center; justify-content: space-between; padding: 0 2px; }
   .card-goal-row .goal { font-size: 10px; letter-spacing: 0.14em; text-transform: uppercase; color: oklch(45% 0 0); }
-  .card-goal-row .progress { font-size: 11px; font-weight: 700; color: oklch(70% 0 0); }
+  .card-goal-row .progress { font-size: 11px; font-weight: 500; color: oklch(70% 0 0); }
   .card-row { display: flex; gap: 8px; }
   .step-btn {
     flex: 1; padding: 9px 0; border-radius: 9px;
     border: 1px solid oklch(24% 0 0); background: transparent;
-    color: oklch(75% 0 0); font-size: 12px; font-weight: 600; cursor: pointer;
+    color: oklch(75% 0 0); font-size: 12px; font-weight: 500; cursor: pointer;
   }
   .step-btn:disabled { opacity: 0.4; cursor: not-allowed; }
   .main-btn {
-    flex: 1; padding: 13px 0; border-radius: 11px; border: none;
-    color: oklch(6% 0 0); font-size: 13px; font-weight: 600; letter-spacing: 0.06em; text-transform: uppercase; cursor: pointer;
+    flex: 1; padding: 13px 0; border-radius: 11px; border: 1px solid oklch(30% 0 0);
+    font-size: 12px; font-weight: 500; letter-spacing: 0.06em; text-transform: uppercase; cursor: pointer;
   }
   .main-btn:disabled { opacity: 0.4; cursor: not-allowed; }
   .finalize-btn {
     flex: 1; padding: 13px 0; border-radius: 11px; border: 1px solid; background: transparent;
-    font-size: 11px; font-weight: 600; letter-spacing: 0.06em; text-transform: uppercase; cursor: pointer;
+    font-size: 11px; font-weight: 500; letter-spacing: 0.06em; text-transform: uppercase; cursor: pointer;
   }
 
-  .week-card { background: oklch(11% 0 0); border-radius: 18px; padding: 20px; display: flex; flex-direction: column; gap: 12px; }
+  .week-card { background: oklch(11% 0 0 / 0.92); border-radius: 18px; padding: 20px; display: flex; flex-direction: column; gap: 12px; }
   .week-card .title { color: oklch(48% 0 0); font-size: 11px; letter-spacing: 0.14em; text-transform: uppercase; }
   .week-bars { display: flex; align-items: flex-end; gap: 10px; height: 100px; }
   .week-bar-col { flex: 1; display: flex; flex-direction: column; align-items: center; gap: 5px; height: 100%; justify-content: flex-end; }
@@ -163,37 +163,37 @@
   }
   .modal-summary { max-width: 460px; max-height: 80vh; overflow-y: auto; }
 
-  .goal-title { color: oklch(97% 0 0); font-weight: 700; font-size: 14px; letter-spacing: 0.1em; text-transform: uppercase; }
+  .goal-title { color: oklch(97% 0 0); font-weight: 500; font-size: 14px; letter-spacing: 0.1em; text-transform: uppercase; }
   .goal-desc { color: oklch(55% 0 0); font-size: 12px; font-weight: 300; line-height: 1.5; }
   .goal-row {
     display: flex; align-items: center; justify-content: space-between;
     background: oklch(12% 0 0); border-radius: 11px; padding: 12px 16px;
   }
-  .goal-tag { font-weight: 600; font-size: 13px; letter-spacing: 0.2em; text-transform: uppercase; }
+  .goal-tag { font-weight: 500; font-size: 13px; letter-spacing: 0.2em; text-transform: uppercase; }
   .goal-stepper { display: flex; align-items: center; gap: 12px; }
   .goal-stepper button {
     width: 30px; height: 30px; border-radius: 8px; border: 1px solid oklch(30% 0 0);
     background: transparent; color: oklch(70% 0 0); font-size: 16px; cursor: pointer;
   }
-  .goal-stepper span { min-width: 48px; text-align: center; font-size: 14px; font-weight: 700; color: oklch(95% 0 0); }
+  .goal-stepper span { min-width: 48px; text-align: center; font-size: 14px; font-weight: 500; color: oklch(95% 0 0); }
   .save-btn {
     padding: 14px 0; border-radius: 11px; border: none; background: oklch(97% 0 0);
-    color: oklch(6% 0 0); font-size: 13px; font-weight: 800; letter-spacing: 0.06em; text-transform: uppercase; cursor: pointer;
+    color: oklch(6% 0 0); font-size: 13px; font-weight: 600; letter-spacing: 0.06em; text-transform: uppercase; cursor: pointer;
   }
 
   .modal-head { display: flex; align-items: center; justify-content: space-between; }
-  .modal-head .title { color: oklch(97% 0 0); font-weight: 800; font-size: 14px; letter-spacing: 0.16em; text-transform: uppercase; }
+  .modal-head .title { color: oklch(97% 0 0); font-weight: 600; font-size: 14px; letter-spacing: 0.16em; text-transform: uppercase; }
   .close-btn { border: none; background: transparent; color: oklch(60% 0 0); font-size: 20px; cursor: pointer; line-height: 1; padding: 0; }
   .section-head { display: flex; align-items: center; justify-content: space-between; margin-top: 6px; }
   .section-label { color: oklch(48% 0 0); font-size: 10px; letter-spacing: 0.14em; text-transform: uppercase; }
-  .link-btn { border: none; background: transparent; cursor: pointer; color: oklch(97% 0 0); font-size: 10px; font-weight: 600; letter-spacing: 0.04em; text-transform: uppercase; padding: 0; }
+  .link-btn { border: none; background: transparent; cursor: pointer; color: oklch(97% 0 0); font-size: 10px; font-weight: 500; letter-spacing: 0.04em; text-transform: uppercase; padding: 0; }
   .link-btn:hover { color: oklch(75% 0 0); }
   .summary-list { display: flex; flex-direction: column; gap: 8px; }
   .summary-row { display: flex; align-items: center; justify-content: space-between; padding: 12px 14px; background: oklch(12% 0 0); border-radius: 11px; gap: 8px; flex-wrap: wrap; }
   .summary-row .label { color: oklch(85% 0 0); font-size: 12px; min-width: 100px; text-transform: capitalize; }
   .summary-metric { display: flex; align-items: center; gap: 6px; }
   .summary-dot { width: 7px; height: 7px; border-radius: 50%; flex: none; }
-  .summary-metric .val { font-size: 12px; font-weight: 700; min-width: 40px; color: oklch(90% 0 0); }
+  .summary-metric .val { font-size: 12px; font-weight: 500; min-width: 40px; color: oklch(90% 0 0); }
 </style>
 </head>
 <body>
@@ -231,7 +231,7 @@
           <button class="step-btn" id="tmPlus5">+5m</button>
         </div>
         <div class="card-row">
-          <button class="main-btn" id="tmToggle" style="background: oklch(97% 0 0)"></button>
+          <button class="main-btn" id="tmToggle" style="background: oklch(20% 0 0); color: oklch(85% 0 0)"></button>
           <button class="finalize-btn" id="tmFinalize" style="border-color: oklch(78% 0.15 75 / 0.4); color: oklch(78% 0.15 75)"></button>
         </div>
       </div>
@@ -252,7 +252,7 @@
           <button class="step-btn" id="mdPlus5">+5m</button>
         </div>
         <div class="card-row">
-          <button class="main-btn" id="mdToggle" style="background: oklch(97% 0 0)"></button>
+          <button class="main-btn" id="mdToggle" style="background: oklch(20% 0 0); color: oklch(85% 0 0)"></button>
           <button class="finalize-btn" id="mdFinalize" style="border-color: oklch(60% 0.11 230 / 0.4); color: oklch(60% 0.11 230)"></button>
         </div>
       </div>
@@ -273,7 +273,7 @@
           <button class="step-btn" id="dpPlus5">+5m</button>
         </div>
         <div class="card-row">
-          <button class="main-btn" id="dpToggle" style="background: oklch(97% 0 0)"></button>
+          <button class="main-btn" id="dpToggle" style="background: oklch(20% 0 0); color: oklch(85% 0 0)"></button>
           <button class="finalize-btn" id="dpFinalize" style="border-color: oklch(70% 0.15 145 / 0.4); color: oklch(70% 0.15 145)"></button>
         </div>
       </div>
@@ -377,7 +377,9 @@
   var DP_ACCENT = 'oklch(70% 0.15 145)';
   var DP_BORDER = 'oklch(70% 0.15 145 / 0.6)';
   var INACTIVE_BORDER = 'oklch(100% 0 0 / 0.06)';
-  var INACTIVE_BG = 'oklch(97% 0 0)';
+  var BTN_INACTIVE_BG = 'oklch(20% 0 0)';
+  var BTN_INACTIVE_TEXT = 'oklch(85% 0 0)';
+  var BTN_ACTIVE_TEXT = 'oklch(6% 0 0)';
 
   function dateKey(d) {
     var y = d.getFullYear(), m = String(d.getMonth() + 1).padStart(2, '0'), day = String(d.getDate()).padStart(2, '0');
@@ -584,16 +586,19 @@
     el('tmToggle').textContent = state.tm.finalized ? 'Día finalizado' : (tmActive ? 'Pausar' : 'Iniciar TM');
     el('mdToggle').textContent = state.md.finalized ? 'Día finalizado' : (mdActive ? 'Pausar' : 'Iniciar MD');
     el('dpToggle').textContent = state.deporte.finalized ? 'Día finalizado' : (dpActive ? 'Pausar' : 'Iniciar');
-    el('tmToggle').style.background = tmActive ? TM_ACCENT : INACTIVE_BG;
-    el('mdToggle').style.background = mdActive ? MD_ACCENT : INACTIVE_BG;
-    el('dpToggle').style.background = dpActive ? DP_ACCENT : INACTIVE_BG;
+    el('tmToggle').style.background = tmActive ? TM_ACCENT : BTN_INACTIVE_BG;
+    el('mdToggle').style.background = mdActive ? MD_ACCENT : BTN_INACTIVE_BG;
+    el('dpToggle').style.background = dpActive ? DP_ACCENT : BTN_INACTIVE_BG;
+    el('tmToggle').style.color = tmActive ? BTN_ACTIVE_TEXT : BTN_INACTIVE_TEXT;
+    el('mdToggle').style.color = mdActive ? BTN_ACTIVE_TEXT : BTN_INACTIVE_TEXT;
+    el('dpToggle').style.color = dpActive ? BTN_ACTIVE_TEXT : BTN_INACTIVE_TEXT;
     el('tmToggle').disabled = state.tm.finalized;
     el('mdToggle').disabled = state.md.finalized;
     el('dpToggle').disabled = state.deporte.finalized;
 
     el('tmFinalize').textContent = state.tm.finalized ? 'Reactivar día TM' : 'Finalizar día TM';
     el('mdFinalize').textContent = state.md.finalized ? 'Reactivar día MD' : 'Finalizar día MD';
-    el('dpFinalize').textContent = state.deporte.finalized ? 'Reactivar día Deporte' : 'Finalizar día Deporte';
+    el('dpFinalize').textContent = state.deporte.finalized ? 'Reactivar día' : 'Finalizar día';
 
     el('tmMinus5').disabled = state.tm.finalized;
     el('tmPlus5').disabled = state.tm.finalized;
