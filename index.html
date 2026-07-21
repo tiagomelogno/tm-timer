@@ -28,13 +28,25 @@
 
   header {
     width: 100%;
+    background:
+      linear-gradient(180deg, oklch(4% 0 0 / 0.45) 0%, oklch(5% 0 0 / 0.82) 60%, oklch(6% 0 0) 100%),
+      url('assets/columns.jpg');
+    background-size: cover;
+    background-position: center 25%;
+    background-repeat: no-repeat;
+  }
+  .header-inner {
+    width: 100%;
     max-width: 900px;
+    margin: 0 auto;
+    min-height: 220px;
     display: flex;
     align-items: center;
     justify-content: space-between;
-    padding: 24px 20px 12px;
+    padding: 28px 20px 24px;
     flex-wrap: wrap;
     gap: 14px;
+    box-sizing: border-box;
   }
   .wordmark { display: flex; align-items: baseline; gap: 8px; }
   .wordmark .name { color: oklch(95% 0 0); font-weight: 700; font-size: 15px; letter-spacing: 0.02em; }
@@ -182,10 +194,12 @@
 <body>
 <div id="app">
   <header>
-    <div class="wordmark"><span class="name">Tiago Melogno</span></div>
-    <div class="header-actions">
-      <button class="ghost-btn" id="editGoalsBtn">Editar metas</button>
-      <button class="ghost-btn" id="openSummaryBtn">Resumen de horas</button>
+    <div class="header-inner">
+      <div class="wordmark"><span class="name">Tiago Melogno</span></div>
+      <div class="header-actions">
+        <button class="ghost-btn" id="editGoalsBtn">Editar metas</button>
+        <button class="ghost-btn" id="openSummaryBtn">Resumen de horas</button>
+      </div>
     </div>
   </header>
 
