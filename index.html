@@ -14,12 +14,22 @@
 <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='14' fill='%230a0a0a'/%3E%3Ctext x='32' y='40' font-family='Arial, sans-serif' font-weight='800' font-size='22' fill='%23e8ba98' text-anchor='middle'%3ETM%3C/text%3E%3C/svg%3E">
 <style>
   * { box-sizing: border-box; }
-  body { margin: 0; font-family: 'Poppins', -apple-system, system-ui, sans-serif; background: oklch(6% 0 0); }
+  body {
+    margin: 0;
+    font-family: 'Poppins', -apple-system, system-ui, sans-serif;
+    background:
+      linear-gradient(oklch(4% 0 0 / 0.88), oklch(4% 0 0 / 0.88)),
+      url('assets/columns.jpg');
+    background-size: cover;
+    background-position: center top;
+    background-repeat: no-repeat;
+    background-attachment: fixed;
+  }
   button { font-family: inherit; }
 
   #app {
     min-height: 100vh;
-    background: oklch(6% 0 0);
+    background: transparent;
     display: flex;
     flex-direction: column;
     align-items: center;
@@ -28,18 +38,12 @@
 
   header {
     width: 100%;
-    background:
-      linear-gradient(180deg, oklch(4% 0 0 / 0.45) 0%, oklch(5% 0 0 / 0.82) 60%, oklch(6% 0 0) 100%),
-      url('assets/columns.jpg');
-    background-size: cover;
-    background-position: center 25%;
-    background-repeat: no-repeat;
   }
   .header-inner {
     width: 100%;
     max-width: 900px;
     margin: 0 auto;
-    min-height: 220px;
+    min-height: 160px;
     display: flex;
     align-items: center;
     justify-content: space-between;
@@ -48,7 +52,8 @@
     gap: 14px;
     box-sizing: border-box;
   }
-  .wordmark { display: flex; align-items: baseline; gap: 8px; }
+  .wordmark { display: flex; align-items: center; gap: 12px; }
+  .wordmark .mark { height: 34px; width: auto; display: block; }
   .wordmark .name { color: oklch(95% 0 0); font-weight: 700; font-size: 15px; letter-spacing: 0.02em; }
   .wordmark .role { color: oklch(50% 0 0); font-weight: 500; font-size: 12px; letter-spacing: 0.01em; }
   .header-actions { display: flex; align-items: center; gap: 10px; flex-wrap: wrap; }
@@ -195,7 +200,7 @@
 <div id="app">
   <header>
     <div class="header-inner">
-      <div class="wordmark"><span class="name">Tiago Melogno</span></div>
+      <div class="wordmark"><img class="mark" src="assets/tm-mark.png" alt="TM"><span class="name">Tiago Melogno</span></div>
       <div class="header-actions">
         <button class="ghost-btn" id="editGoalsBtn">Editar metas</button>
         <button class="ghost-btn" id="openSummaryBtn">Resumen de horas</button>
