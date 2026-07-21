@@ -164,7 +164,10 @@
   .modal-head { display: flex; align-items: center; justify-content: space-between; }
   .modal-head .title { color: oklch(97% 0 0); font-weight: 800; font-size: 14px; letter-spacing: 0.16em; text-transform: uppercase; }
   .close-btn { border: none; background: transparent; color: oklch(60% 0 0); font-size: 20px; cursor: pointer; line-height: 1; padding: 0; }
-  .section-label { color: oklch(48% 0 0); font-size: 10px; letter-spacing: 0.14em; text-transform: uppercase; margin-top: 6px; }
+  .section-head { display: flex; align-items: center; justify-content: space-between; margin-top: 6px; }
+  .section-label { color: oklch(48% 0 0); font-size: 10px; letter-spacing: 0.14em; text-transform: uppercase; }
+  .link-btn { border: none; background: transparent; cursor: pointer; color: oklch(65% 0.05 230); font-size: 10px; font-weight: 700; letter-spacing: 0.04em; text-transform: uppercase; padding: 0; }
+  .link-btn:hover { color: oklch(80% 0.05 230); }
   .summary-list { display: flex; flex-direction: column; gap: 8px; }
   .summary-row { display: flex; align-items: center; justify-content: space-between; padding: 12px 14px; background: oklch(12% 0 0); border-radius: 11px; }
   .summary-row .label { color: oklch(85% 0 0); font-size: 12px; min-width: 120px; text-transform: capitalize; }
@@ -234,7 +237,7 @@
     </div>
 
     <div class="week-card">
-      <span class="title">Últimos 7 días</span>
+      <span class="title">Esta semana</span>
       <div class="week-bars" id="weekBars"></div>
     </div>
 
@@ -275,9 +278,12 @@
       </div>
       <span class="section-label">Por día</span>
       <div class="summary-list" id="summaryRows"></div>
-      <span class="section-label">Resultado semanal</span>
+      <span class="section-label" style="margin-top: 6px">Resultado semanal</span>
       <div class="summary-list" id="weeklyRows"></div>
-      <span class="section-label">Resultado mensual</span>
+      <div class="section-head">
+        <span class="section-label">Resultado mensual</span>
+        <button class="link-btn" id="toggleAllMonthsBtn">Ver todos los meses del año</button>
+      </div>
       <div class="summary-list" id="monthlyRows"></div>
     </div>
   </div>
@@ -299,7 +305,10 @@
     goalsConfirmed: false,
     showGoalSetup: false,
     showSummary: false,
+    showAllMonths: false,
   };
+
+  var HISTORY_DAYS = 400;
 
   function dateKey(d) {
     var y = d.getFullYear(), m = String(d.getMonth() + 1).padStart(2, '0'), day = String(d.getDate()).padStart(2, '0');
@@ -350,7 +359,7 @@
         tmH: state.tm.seconds / 3600, mdH: state.md.seconds / 3600,
         tmGoal: state.tm.goal, mdGoal: state.md.goal,
       };
-      state.history = state.history.concat([entry]).slice(-60);
+      state.history = state.history.concat([entry]).slice(-HISTORY_DAYS);
       state.today = todayKey;
       state.tm = { seconds: 0, finalized: false, goal: state.tm.goal };
       state.md = { seconds: 0, finalized: false, goal: state.md.goal };
@@ -438,6 +447,15 @@
     return h + ':' + m + ':' + sec;
   }
 
+  function formatDuration(hoursFloat) {
+    var totalMinutes = Math.round(Math.max(0, hoursFloat) * 60);
+    var h = Math.floor(totalMinutes / 60);
+    var m = totalMinutes % 60;
+    if (h === 0) return m + ' min';
+    if (m === 0) return h + ' h';
+    return h + '.' + String(m).padStart(2, '0') + ' h';
+  }
+
   function el(id) { return document.getElementById(id); }
 
   function render() {
@@ -466,10 +484,10 @@
     el('mdTimeStr').textContent = formatHMS(mdSec);
     el('tmBarFill').style.width = tmPct + '%';
     el('mdBarFill').style.width = mdPct + '%';
-    el('tmGoalStr').textContent = 'Meta ' + state.tm.goal.toFixed(1) + 'h';
-    el('mdGoalStr').textContent = 'Meta ' + state.md.goal.toFixed(1) + 'h';
-    el('tmProgressStr').textContent = (tmSec / 3600).toFixed(1) + 'h / ' + state.tm.goal.toFixed(1) + 'h';
-    el('mdProgressStr').textContent = (mdSec / 3600).toFixed(1) + 'h / ' + state.md.goal.toFixed(1) + 'h';
+    el('tmGoalStr').textContent = 'Meta ' + formatDuration(state.tm.goal);
+    el('mdGoalStr').textContent = 'Meta ' + formatDuration(state.md.goal);
+    el('tmProgressStr').textContent = formatDuration(tmSec / 3600) + ' / ' + formatDuration(state.tm.goal);
+    el('mdProgressStr').textContent = formatDuration(mdSec / 3600) + ' / ' + formatDuration(state.md.goal);
 
     el('tmCard').style.borderColor = tmActive ? 'oklch(78% 0.15 75 / 0.6)' : 'oklch(100% 0 0 / 0.06)';
     el('mdCard').style.borderColor = mdActive ? 'oklch(60% 0.11 230 / 0.6)' : 'oklch(100% 0 0 / 0.06)';
@@ -494,10 +512,14 @@
     el('mdMinus5').disabled = state.md.finalized;
     el('mdPlus5').disabled = state.md.finalized;
 
-    // Week chart
+    // Week chart (semana fija lunes-domingo)
+    var now = new Date();
+    var nowDow = now.getDay();
+    var weekMonday = new Date(now);
+    weekMonday.setDate(now.getDate() + (nowDow === 0 ? -6 : 1 - nowDow));
     var days = [];
-    for (var d = 6; d >= 0; d--) {
-      var date = new Date(); date.setDate(date.getDate() - d);
+    for (var d = 0; d < 7; d++) {
+      var date = new Date(weekMonday); date.setDate(weekMonday.getDate() + d);
       var key = dateKey(date);
       var tmH, mdH;
       if (key === state.today) { tmH = tmSec / 3600; mdH = mdSec / 3600; }
@@ -524,8 +546,8 @@
 
     // Goal setup
     el('goalSetupOverlay').hidden = !state.showGoalSetup;
-    el('goalTMVal').textContent = state.tm.goal.toFixed(1) + 'h';
-    el('goalMDVal').textContent = state.md.goal.toFixed(1) + 'h';
+    el('goalTMVal').textContent = formatDuration(state.tm.goal);
+    el('goalMDVal').textContent = formatDuration(state.md.goal);
 
     // Summary
     el('summaryOverlay').hidden = !state.showSummary;
@@ -536,8 +558,8 @@
         var mdColor = e.mdH + 1e-9 >= e.mdGoal ? 'oklch(65% 0.05 230)' : 'oklch(65% 0 0)';
         return '<div class="summary-row">' +
           '<span class="label">' + dateLabel + '</span>' +
-          '<div class="summary-metric"><span class="summary-dot" style="background: oklch(78% 0.15 75)"></span><span class="val" style="color:' + tmColor + '">' + e.tmH.toFixed(1) + 'h</span></div>' +
-          '<div class="summary-metric"><span class="summary-dot" style="background: oklch(60% 0.11 230)"></span><span class="val" style="color:' + mdColor + '">' + e.mdH.toFixed(1) + 'h</span></div>' +
+          '<div class="summary-metric"><span class="summary-dot" style="background: oklch(78% 0.15 75)"></span><span class="val" style="color:' + tmColor + '">' + formatDuration(e.tmH) + '</span></div>' +
+          '<div class="summary-metric"><span class="summary-dot" style="background: oklch(60% 0.11 230)"></span><span class="val" style="color:' + mdColor + '">' + formatDuration(e.mdH) + '</span></div>' +
           '</div>';
       }).join('');
       el('summaryRows').innerHTML = summaryRows;
@@ -557,8 +579,8 @@
         .map(function (w) {
           return '<div class="summary-row">' +
             '<span class="label">' + w.label + '</span>' +
-            '<div class="summary-metric"><span class="summary-dot" style="background: oklch(78% 0.15 75)"></span><span class="val">' + w.tmH.toFixed(1) + 'h</span></div>' +
-            '<div class="summary-metric"><span class="summary-dot" style="background: oklch(60% 0.11 230)"></span><span class="val">' + w.mdH.toFixed(1) + 'h</span></div>' +
+            '<div class="summary-metric"><span class="summary-dot" style="background: oklch(78% 0.15 75)"></span><span class="val">' + formatDuration(w.tmH) + '</span></div>' +
+            '<div class="summary-metric"><span class="summary-dot" style="background: oklch(60% 0.11 230)"></span><span class="val">' + formatDuration(w.mdH) + '</span></div>' +
             '</div>';
         }).join('');
       el('weeklyRows').innerHTML = weeklyRows;
@@ -575,15 +597,31 @@
         var m = monthMap.get(mKey);
         m.tmH += e.tmH; m.mdH += e.mdH;
       });
-      var monthlyRows = Array.from(monthMap.values()).sort(function (a, b) { return b.sortKey.localeCompare(a.sortKey); })
-        .map(function (m) {
+
+      var currentYear = new Date().getFullYear();
+      var monthEntries;
+      if (state.showAllMonths) {
+        var monthNamesEs = ['enero', 'febrero', 'marzo', 'abril', 'mayo', 'junio', 'julio', 'agosto', 'septiembre', 'octubre', 'noviembre', 'diciembre'];
+        monthEntries = [];
+        for (var mi = 11; mi >= 0; mi--) {
+          var mKey2 = currentYear + '-' + String(mi + 1).padStart(2, '0');
+          var found = monthMap.get(mKey2);
+          var label2 = monthNamesEs[mi].charAt(0).toUpperCase() + monthNamesEs[mi].slice(1) + ' ' + currentYear;
+          monthEntries.push(found || { sortKey: mKey2, label: label2, tmH: 0, mdH: 0 });
+        }
+      } else {
+        monthEntries = Array.from(monthMap.values()).sort(function (a, b) { return b.sortKey.localeCompare(a.sortKey); }).slice(0, 3);
+      }
+
+      var monthlyRows = monthEntries.map(function (m) {
           return '<div class="summary-row">' +
             '<span class="label">' + m.label + '</span>' +
-            '<div class="summary-metric"><span class="summary-dot" style="background: oklch(78% 0.15 75)"></span><span class="val">' + m.tmH.toFixed(1) + 'h</span></div>' +
-            '<div class="summary-metric"><span class="summary-dot" style="background: oklch(60% 0.11 230)"></span><span class="val">' + m.mdH.toFixed(1) + 'h</span></div>' +
+            '<div class="summary-metric"><span class="summary-dot" style="background: oklch(78% 0.15 75)"></span><span class="val">' + formatDuration(m.tmH) + '</span></div>' +
+            '<div class="summary-metric"><span class="summary-dot" style="background: oklch(60% 0.11 230)"></span><span class="val">' + formatDuration(m.mdH) + '</span></div>' +
             '</div>';
         }).join('');
       el('monthlyRows').innerHTML = monthlyRows;
+      el('toggleAllMonthsBtn').textContent = state.showAllMonths ? 'Ver menos' : 'Ver todos los meses del año';
     }
   }
 
@@ -592,6 +630,7 @@
     el('openSummaryBtn').addEventListener('click', function () { state.showSummary = true; render(); });
     el('closeSummaryBtn').addEventListener('click', function () { state.showSummary = false; render(); });
     el('summaryOverlay').addEventListener('click', function (e) { if (e.target === el('summaryOverlay')) { state.showSummary = false; render(); } });
+    el('toggleAllMonthsBtn').addEventListener('click', function () { state.showAllMonths = !state.showAllMonths; render(); });
 
     el('confirmGoalsBtn').addEventListener('click', function () { confirmGoals(); render(); });
     el('goalUpTM').addEventListener('click', function () { adjustGoal('TM', 0.5); render(); });
