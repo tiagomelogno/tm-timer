@@ -16,18 +16,24 @@
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800&display=swap">
 <style>
   * { box-sizing: border-box; }
+  html, body { background: #000; }
   body {
     margin: 0;
     font-family: 'Poppins', -apple-system, system-ui, sans-serif;
+  }
+  button { font-family: inherit; }
+
+  #bgFixed {
+    position: fixed;
+    inset: 0;
+    z-index: -1;
     background:
       linear-gradient(oklch(4% 0 0 / 0.88), oklch(4% 0 0 / 0.88)),
       url('assets/columns.jpg');
     background-size: cover;
     background-position: center top;
     background-repeat: no-repeat;
-    background-attachment: fixed;
   }
-  button { font-family: inherit; }
 
   #app {
     min-height: 100vh;
@@ -40,6 +46,7 @@
 
   header {
     width: 100%;
+    padding-top: calc(env(safe-area-inset-top) + 12px);
   }
   .header-inner {
     width: 100%;
@@ -199,6 +206,7 @@
 </style>
 </head>
 <body>
+<div id="bgFixed"></div>
 <div id="app">
   <header>
     <div class="header-inner">
